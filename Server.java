@@ -34,7 +34,7 @@ public class Server {
     }
     public static void sendToAll() {
     	for (ServerThread client : clients) {
-    		client.outputWriter.println("Termin updated!!! Check list!!!");
+    		client.outputWriter.println("Termins updated!!! Check list!!!");
     		System.out.println(client);
     	}
     }
