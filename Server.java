@@ -11,6 +11,10 @@ public class Server {
     public static volatile List<ServerThread> clients = new ArrayList<>();
     
     public static void main(String[] args) throws IOException{
+    	if(args.length > 0) {
+    		System.out.println("Usage: java Server");
+    		System.exit(0);
+    	}
     	new Server();
     }
     
@@ -30,8 +34,7 @@ public class Server {
     }
     public static void sendToAll() {
     	for (ServerThread client : clients) {
-    		client.outputWriter.println("Termin updated!!! Check list!!!");
-    		System.out.println(client);
+    		client.outputWriter.println("Termins updated!!! Check list!!!");
     	}
     }
 }

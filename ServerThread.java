@@ -26,15 +26,39 @@ public class ServerThread extends Thread {
             while (true) {
             	message = bufferedReader.readLine();
                 System.out.println("incoming client '" + name + "' message: " + message);
-//                printWriter.println(message);
                 try {
                 	int sth = Integer.parseInt(message);
                 	if (sth == 1) {
                 		printWriter.println(freeTermins());
+                		printWriter.flush();
                 	} else if (sth == 2) {
                 		printWriter.println(userTermins(name));
                 	} else if (sth == 3) {
-                		booking(printWriter, name);
+                		BufferedReader temporaryReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                		String tmp = temporaryReader.readLine();
+                		try {
+                			int number = Integer.parseInt(tmp);
+                			if (number >=0 && number <=9) {
+	                    		synchronized(termins[number]) {
+		                			if(termins[number].getReserved() == false) {
+		                				termins[number].setReserved(true);
+		                    			termins[number].setUser(name);
+		                    			if(termins[number].getUser() == name) {
+		                    				printWriter.println("Termin booked successfuly!");
+		                    				Server.sendToAll();
+		                    			} else {
+		                    				printWriter.println("Error, it's already booked!");
+		                    			}
+		                			} else {
+		                				printWriter.println("Error! Termin is already booked!");
+		                			}
+	                        	}
+                			} else {
+                				printWriter.println("Reservation doesn't exists!");
+                			}
+                		} catch (NumberFormatException e) {
+                			
+                		}
                 	} else if (sth == 4) {
                 		BufferedReader temporaryReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 		String tmp = temporaryReader.readLine();
@@ -93,28 +117,6 @@ public class ServerThread extends Thread {
 			}
 		}
     	return freeTermins;
-    }
-    
-    private synchronized void booking(PrintWriter printWriter, String name) throws IOException {
-    	BufferedReader temporaryReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		String tmp = temporaryReader.readLine();
-		try {
-			int number = Integer.parseInt(tmp);
-			if (number >=0 && number <=9) {
-			if(termins[number].getReserved() == false) {
-				termins[number].setReserved(true);
-    			termins[number].setUser(name);
-//    			printWriter.println("Termin booked successfuly!");
-    			Server.sendToAll();
-			} else {
-				printWriter.println("Error! Termin is already booked!");
-			}
-			} else {
-				printWriter.println("Reservation doesn't exists!");
-			}
-		} catch (NumberFormatException e) {
-			
-		}
     }
 
 }
