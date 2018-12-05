@@ -23,7 +23,7 @@ public class Client {
         printWriter.println(name);
         BufferedReader bufferedReaderFromCmdPrompt = new java.io.BufferedReader(new InputStreamReader(System.in));
         while(true){
-        	Thread.sleep(100);
+        	Thread.sleep(200);
         	displayMenu();
             String readerInput = bufferedReaderFromCmdPrompt.readLine();
             String forCheck = readerInput;

@@ -41,20 +41,8 @@ public class ServerThread extends Thread {
                 			if (number >=0 && number <=9) {
 	                    		synchronized(termins[number]) {
 		                			if(termins[number].getReserved() == false) {
-		                				try {
-											Thread.sleep(5000);
-										} catch (InterruptedException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
 		                				termins[number].setReserved(true);
 		                    			termins[number].setUser(name);
-		                    			try {
-											Thread.sleep(5000);
-										} catch (InterruptedException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
 		                    			if(termins[number].getUser() == name) {
 		                    				printWriter.println("Termin booked successfuly!");
 		                    				Server.sendToAll();
